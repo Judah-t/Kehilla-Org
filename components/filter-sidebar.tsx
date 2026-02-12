@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react"
-import { Check, SlidersHorizontal, X } from "lucide-react"
+import { Check, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -18,6 +18,8 @@ interface FilterSidebarProps {
   resultCount?: number
 }
 
+/* ── Shared filter content ──────────────────────────────────────────────── */
+
 function FilterContent({
   categories,
   neighborhoods,
@@ -25,7 +27,6 @@ function FilterContent({
   activeNeighborhoods,
   onCategoryClick,
   onNeighborhoodToggle,
-  onClear,
 }: {
   categories: Category[]
   neighborhoods: Neighborhood[]
@@ -33,18 +34,15 @@ function FilterContent({
   activeNeighborhoods: string[]
   onCategoryClick: (slug: string) => void
   onNeighborhoodToggle: (slug: string) => void
-  onClear: () => void
 }) {
-  const hasFilters = activeCategory || activeNeighborhoods.length > 0
-
   return (
     <div className="flex flex-col gap-8">
       {/* Neighborhoods */}
       <section>
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-primary">
+        <h3 className="font-display text-[11px] font-semibold uppercase tracking-widest text-primary">
           Neighborhoods
         </h3>
-        <div className="mt-4 flex flex-col">
+        <div className="mt-3 flex flex-col">
           {neighborhoods.map((n) => {
             const isActive = activeNeighborhoods.includes(n.slug)
             return (
@@ -52,19 +50,19 @@ function FilterContent({
                 key={n.id}
                 type="button"
                 onClick={() => onNeighborhoodToggle(n.slug)}
-                className="flex items-center justify-between border-b border-border px-1 py-3.5 text-sm text-foreground transition-colors last:border-b-0 hover:bg-muted/50"
+                className="flex items-center justify-between border-b border-border/60 py-3 text-[13px] text-foreground transition-colors last:border-b-0 hover:text-primary"
               >
                 <span className={isActive ? "font-medium" : ""}>
                   {n.name}
                 </span>
                 <span
-                  className={`flex h-6 w-6 items-center justify-center rounded-full border-2 transition-colors ${
+                  className={`flex h-5 w-5 items-center justify-center rounded-full border-[1.5px] transition-all ${
                     isActive
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-border"
                   }`}
                 >
-                  {isActive && <Check className="h-3.5 w-3.5" />}
+                  {isActive && <Check className="h-3 w-3" />}
                 </span>
               </button>
             )
@@ -74,10 +72,10 @@ function FilterContent({
 
       {/* Business Category */}
       <section>
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-primary">
+        <h3 className="font-display text-[11px] font-semibold uppercase tracking-widest text-primary">
           Business Category
         </h3>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {categories.map((cat) => {
             const isActive = activeCategory === cat.slug
             return (
@@ -85,10 +83,10 @@ function FilterContent({
                 key={cat.id}
                 type="button"
                 onClick={() => onCategoryClick(cat.slug)}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-lg border px-3.5 py-2 text-[13px] font-medium transition-colors ${
                   isActive
                     ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border text-foreground hover:border-primary/40 hover:text-primary"
+                    : "border-border bg-card text-foreground hover:border-primary/40"
                 }`}
               >
                 {cat.name}
@@ -97,20 +95,11 @@ function FilterContent({
           })}
         </div>
       </section>
-
-      {/* Clear All */}
-      {hasFilters && (
-        <button
-          type="button"
-          onClick={onClear}
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Clear All
-        </button>
-      )}
     </div>
   )
 }
+
+/* ── Main component ─────────────────────────────────────────────────────── */
 
 export function FilterSidebar({
   categories,
@@ -170,7 +159,6 @@ export function FilterSidebar({
     activeNeighborhoods,
     onCategoryClick: handleCategoryClick,
     onNeighborhoodToggle: handleNeighborhoodToggle,
-    onClear: handleClear,
   }
 
   const hasFilters = activeCategory || activeNeighborhoods.length > 0
@@ -179,21 +167,34 @@ export function FilterSidebar({
     <>
       {/* Desktop sidebar */}
       <aside className="hidden lg:block">
-        <FilterContent {...filterContentProps} />
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-sm font-semibold text-foreground">
+            Filters
+          </h2>
+          {hasFilters && (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="text-xs font-medium text-primary hover:underline"
+            >
+              Clear all
+            </button>
+          )}
+        </div>
+        <div className="mt-5">
+          <FilterContent {...filterContentProps} />
+        </div>
       </aside>
 
-      {/* Mobile sheet trigger */}
+      {/* Mobile trigger */}
       <div className="lg:hidden">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              className="gap-2"
-            >
+            <Button variant="outline" size="sm" className="gap-2">
               <SlidersHorizontal className="h-4 w-4" />
               Filters
               {hasFilters && (
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {(activeCategory ? 1 : 0) + activeNeighborhoods.length}
                 </span>
               )}
@@ -204,7 +205,7 @@ export function FilterSidebar({
             className="flex max-h-[85vh] flex-col rounded-t-2xl px-5 pb-0"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-border pb-4">
+            <div className="flex items-center justify-between border-b border-border pb-3 pt-1">
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -212,7 +213,7 @@ export function FilterSidebar({
               >
                 Cancel
               </button>
-              <SheetTitle className="text-base font-semibold">
+              <SheetTitle className="font-display text-base font-semibold">
                 Filters
               </SheetTitle>
               <button
@@ -232,19 +233,17 @@ export function FilterSidebar({
               <FilterContent {...filterContentProps} />
             </div>
 
-            {/* Sticky bottom bar */}
-            <div className="flex items-center gap-4 border-t border-border bg-background px-1 py-4">
+            {/* Sticky bottom */}
+            <div className="flex items-center gap-4 border-t border-border bg-card py-4">
               <button
                 type="button"
-                onClick={() => {
-                  handleClear()
-                }}
+                onClick={handleClear}
                 className="text-sm font-medium text-muted-foreground"
               >
                 Clear All
               </button>
               <Button
-                className="flex-1 rounded-full"
+                className="flex-1"
                 size="lg"
                 onClick={() => setOpen(false)}
               >

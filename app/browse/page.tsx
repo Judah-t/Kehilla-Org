@@ -28,8 +28,11 @@ async function BusinessGrid({
 
   if (businesses.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-16 text-center">
-        <p className="text-lg font-medium text-foreground">
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-20 text-center">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary">
+          <span className="text-2xl text-muted-foreground/40">?</span>
+        </div>
+        <p className="mt-4 font-display text-lg font-semibold text-foreground">
           No businesses found
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -40,11 +43,16 @@ async function BusinessGrid({
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {businesses.map((biz) => (
-        <BusinessCard key={biz.id} business={biz} />
-      ))}
-    </div>
+    <>
+      <p className="mb-4 text-sm text-muted-foreground">
+        {businesses.length} {businesses.length === 1 ? "business" : "businesses"} found
+      </p>
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {businesses.map((biz) => (
+          <BusinessCard key={biz.id} business={biz} />
+        ))}
+      </div>
+    </>
   )
 }
 
@@ -56,9 +64,10 @@ function GridSkeleton() {
           key={`skeleton-${i}`}
           className="flex flex-col overflow-hidden rounded-xl border border-border"
         >
-          <Skeleton className="h-36 w-full" />
+          <Skeleton className="h-44 w-full" />
           <div className="flex flex-col gap-3 p-5">
             <Skeleton className="h-5 w-3/4" />
+            <Skeleton className="h-4 w-1/3" />
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-2/3" />
           </div>
@@ -86,31 +95,31 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8 lg:py-12">
       {/* Page Header */}
-      <div className="flex flex-col gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground md:text-3xl">
-            {categoryName ? categoryName : "Browse Businesses"}
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {activeSearch
-              ? `Showing results for "${activeSearch}"`
-              : "Discover trusted local businesses in the community"}
-          </p>
-        </div>
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <SearchBar defaultValue={activeSearch} className="flex-1 max-w-xl" />
-          <FilterSidebar
-            categories={categories}
-            neighborhoods={neighborhoods}
-            resultCount={allBusinesses.length}
-          />
-        </div>
+      <div className="flex flex-col gap-1">
+        <h1 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+          {categoryName ? categoryName : "Browse Directory"}
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          {activeSearch
+            ? `Showing results for "${activeSearch}"`
+            : "Discover trusted local businesses in the community"}
+        </p>
+      </div>
+
+      {/* Search + mobile filter trigger */}
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <SearchBar defaultValue={activeSearch} className="max-w-xl flex-1" />
+        <FilterSidebar
+          categories={categories}
+          neighborhoods={neighborhoods}
+          resultCount={allBusinesses.length}
+        />
       </div>
 
       {/* Content */}
       <div className="mt-8 flex flex-col gap-10 lg:flex-row">
         {/* Desktop sidebar */}
-        <div className="hidden w-64 shrink-0 lg:block">
+        <div className="hidden w-60 shrink-0 lg:block">
           <FilterSidebar
             categories={categories}
             neighborhoods={neighborhoods}

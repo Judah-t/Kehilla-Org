@@ -1,41 +1,46 @@
+import Link from "next/link"
 import { SearchBar } from "@/components/search-bar"
+
+const QUICK_LINKS = [
+  { label: "Food & Drink", href: "/browse?category=food-drink" },
+  { label: "Services", href: "/browse?category=services" },
+  { label: "Shopping", href: "/browse?category=shopping" },
+  { label: "Events", href: "/browse?category=events" },
+  { label: "Health", href: "/browse?category=health-wellness" },
+]
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-background px-4 pb-16 pt-20 md:pb-20 md:pt-28">
-      {/* Subtle decorative ring */}
-      <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full border border-primary/10" />
-      <div className="pointer-events-none absolute -left-20 bottom-0 h-64 w-64 rounded-full border border-primary/5" />
+    <section className="relative overflow-hidden bg-primary px-4 pb-20 pt-24 md:pb-28 md:pt-32">
+      {/* Subtle decorative shapes */}
+      <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-primary-foreground/5" />
+      <div className="pointer-events-none absolute -left-16 bottom-0 h-56 w-56 rounded-full bg-primary-foreground/5" />
 
-      <div className="relative mx-auto max-w-2xl text-center">
-        <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-          Community Business Directory
+      <div className="relative mx-auto max-w-3xl text-center">
+        <p className="text-sm font-medium tracking-wider text-primary-foreground/70">
+          YOUR COMMUNITY BUSINESS DIRECTORY
         </p>
-        <h1 className="mt-4 text-balance text-3xl font-bold tracking-tight text-foreground md:text-4xl lg:text-5xl">
-          Find trusted businesses
-          <br />
-          in your community.
+        <h1 className="mt-5 font-display text-balance text-4xl font-bold tracking-tight text-primary-foreground md:text-5xl lg:text-6xl">
+          Discover trusted businesses in your community
         </h1>
-        <p className="mx-auto mt-4 max-w-md text-pretty text-base leading-relaxed text-muted-foreground">
-          Kehilla connects you with reliable, community-recommended local
-          businesses and services.
+        <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-primary-foreground/75 md:text-lg">
+          Find local shops, restaurants, services, and professionals recommended
+          by people you know and trust.
         </p>
-        <div className="mx-auto mt-8 max-w-lg">
-          <SearchBar size="large" />
+        <div className="mx-auto mt-10 max-w-xl">
+          <SearchBar size="large" variant="hero" />
         </div>
         <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-sm">
-          <span className="text-muted-foreground">Popular:</span>
-          {["Restaurants", "Education", "Health", "Real Estate"].map(
-            (term) => (
-              <a
-                key={term}
-                href={`/browse?category=${term.toLowerCase().replace(" ", "-")}`}
-                className="rounded-full border border-border px-3 py-1 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-              >
-                {term}
-              </a>
-            ),
-          )}
+          <span className="text-primary-foreground/60">Popular:</span>
+          {QUICK_LINKS.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="rounded-full border border-primary-foreground/20 px-3.5 py-1.5 text-sm text-primary-foreground/80 transition-colors hover:border-primary-foreground/40 hover:text-primary-foreground"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
       </div>
     </section>

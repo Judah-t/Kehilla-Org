@@ -1,26 +1,26 @@
 import Link from "next/link"
 import {
   UtensilsCrossed,
-  ShoppingCart,
-  GraduationCap,
+  Wrench,
+  ShoppingBag,
   Heart,
-  Home,
-  Scale,
+  GraduationCap,
+  PartyPopper,
   Building2,
-  Landmark,
+  Scale,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import type { Category } from "@/lib/supabase"
 
 const ICON_MAP: Record<string, LucideIcon> = {
   UtensilsCrossed,
-  ShoppingCart,
-  GraduationCap,
+  Wrench,
+  ShoppingBag,
   Heart,
-  Home,
-  Scale,
+  GraduationCap,
+  PartyPopper,
   Building2,
-  Landmark,
+  Scale,
 }
 
 interface CategoryCardProps {
@@ -33,14 +33,21 @@ export function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Link
       href={`/browse?category=${category.slug}`}
-      className="group flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-sm"
+      className="group flex flex-col items-start gap-4 rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-md"
     >
-      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/8 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
         <Icon className="h-5 w-5" />
       </div>
-      <span className="text-sm font-medium text-foreground">
-        {category.name}
-      </span>
+      <div>
+        <h3 className="font-display text-sm font-semibold text-foreground">
+          {category.name}
+        </h3>
+        {category.description && (
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+            {category.description}
+          </p>
+        )}
+      </div>
     </Link>
   )
 }
