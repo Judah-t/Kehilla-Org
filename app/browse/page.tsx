@@ -2,13 +2,18 @@ import { Suspense } from "react"
 import { SearchBar } from "@/components/search-bar"
 import { FilterSidebar } from "@/components/filter-sidebar"
 import { BusinessCard } from "@/components/business-card"
-import { getBusinesses, getCategories } from "@/lib/supabase"
+import {
+  getBusinesses,
+  getCategories,
+  getNeighborhoods,
+} from "@/lib/supabase"
 import { Skeleton } from "@/components/ui/skeleton"
 
 interface BrowsePageProps {
   searchParams: Promise<{
     category?: string
     search?: string
+    neighborhood?: string | string[]
   }>
 }
 
@@ -35,7 +40,7 @@ async function BusinessGrid({
   }
 
   return (
-    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {businesses.map((biz) => (
         <BusinessCard key={biz.id} business={biz} />
       ))}
@@ -45,13 +50,13 @@ async function BusinessGrid({
 
 function GridSkeleton() {
   return (
-    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={`skeleton-${i}`}
           className="flex flex-col overflow-hidden rounded-xl border border-border"
         >
-          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-36 w-full" />
           <div className="flex flex-col gap-3 p-5">
             <Skeleton className="h-5 w-3/4" />
             <Skeleton className="h-4 w-full" />
@@ -65,7 +70,11 @@ function GridSkeleton() {
 
 export default async function BrowsePage({ searchParams }: BrowsePageProps) {
   const params = await searchParams
-  const categories = await getCategories()
+  const [categories, neighborhoods, allBusinesses] = await Promise.all([
+    getCategories(),
+    getNeighborhoods(),
+    getBusinesses({ category: params.category, search: params.search }),
+  ])
 
   const activeCategory = params.category
   const activeSearch = params.search
@@ -88,14 +97,25 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
               : "Discover trusted local businesses in the community"}
           </p>
         </div>
-        <SearchBar defaultValue={activeSearch} className="max-w-xl" />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <SearchBar defaultValue={activeSearch} className="flex-1 max-w-xl" />
+          <FilterSidebar
+            categories={categories}
+            neighborhoods={neighborhoods}
+            resultCount={allBusinesses.length}
+          />
+        </div>
       </div>
 
       {/* Content */}
-      <div className="mt-8 flex flex-col gap-8 lg:flex-row">
-        {/* Sidebar */}
-        <div className="w-full shrink-0 lg:w-56">
-          <FilterSidebar categories={categories} />
+      <div className="mt-8 flex flex-col gap-10 lg:flex-row">
+        {/* Desktop sidebar */}
+        <div className="hidden w-64 shrink-0 lg:block">
+          <FilterSidebar
+            categories={categories}
+            neighborhoods={neighborhoods}
+            resultCount={allBusinesses.length}
+          />
         </div>
 
         {/* Grid */}

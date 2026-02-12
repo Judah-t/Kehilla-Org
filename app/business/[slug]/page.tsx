@@ -1,16 +1,8 @@
 import React from "react"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import {
-  ArrowLeft,
-  MapPin,
-  Phone,
-  Mail,
-  Globe,
-  Clock,
-} from "lucide-react"
+import { ArrowLeft, MapPin, Phone, Mail, Globe, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { getBusinessBySlug, getBusinesses } from "@/lib/supabase"
 
@@ -36,7 +28,9 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
 
   const relatedBusinesses = (
     await getBusinesses({ category: business.category })
-  ).filter((b) => b.id !== business.id).slice(0, 3)
+  )
+    .filter((b) => b.id !== business.id)
+    .slice(0, 3)
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8 lg:py-12">
@@ -52,8 +46,8 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
         {/* Main content */}
         <div className="flex-1">
           {/* Header image area */}
-          <div className="flex h-56 items-center justify-center rounded-xl bg-muted md:h-72">
-            <span className="text-6xl font-bold text-muted-foreground/20">
+          <div className="flex h-52 items-center justify-center rounded-xl bg-secondary md:h-64">
+            <span className="text-6xl font-bold text-muted-foreground/15">
               {business.name.charAt(0)}
             </span>
           </div>
@@ -64,9 +58,9 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
               <h1 className="text-2xl font-bold text-foreground md:text-3xl text-balance">
                 {business.name}
               </h1>
-              <Badge variant="secondary" className="mt-1">
+              <span className="mt-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-sm font-medium text-primary">
                 {business.category}
-              </Badge>
+              </span>
             </div>
 
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
@@ -77,9 +71,12 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
             {business.tags.length > 0 && (
               <div className="mt-5 flex flex-wrap gap-2">
                 {business.tags.map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs">
+                  <span
+                    key={tag}
+                    className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
+                  >
                     {tag}
-                  </Badge>
+                  </span>
                 ))}
               </div>
             )}
@@ -89,7 +86,10 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
           {relatedBusinesses.length > 0 && (
             <div className="mt-10">
               <Separator className="mb-8" />
-              <h2 className="text-lg font-semibold text-foreground">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+                Related
+              </p>
+              <h2 className="mt-1 text-lg font-semibold text-foreground">
                 More in {business.category}
               </h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -97,9 +97,9 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                   <Link
                     key={biz.id}
                     href={`/business/${biz.slug}`}
-                    className="group rounded-xl border border-border bg-card p-4 transition-shadow hover:shadow-md"
+                    className="group rounded-xl border border-border bg-card p-4 transition-all hover:shadow-md"
                   >
-                    <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
+                    <h3 className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
                       {biz.name}
                     </h3>
                     <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
@@ -114,8 +114,8 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
 
         {/* Sidebar - Contact Info */}
         <aside className="w-full shrink-0 lg:w-80">
-          <div className="sticky top-24 rounded-xl border border-border bg-card p-6">
-            <h2 className="text-base font-semibold text-foreground">
+          <div className="sticky top-20 rounded-xl border border-border bg-card p-6">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-primary">
               Contact Information
             </h2>
 
@@ -140,7 +140,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
               <ContactRow icon={Mail} label="Email">
                 <a
                   href={`mailto:${business.email}`}
-                  className="text-primary hover:underline break-all"
+                  className="break-all text-primary hover:underline"
                 >
                   {business.email}
                 </a>
@@ -151,7 +151,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                   href={business.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline break-all"
+                  className="break-all text-primary hover:underline"
                 >
                   {business.website.replace(/^https?:\/\//, "")}
                 </a>
@@ -164,7 +164,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
 
             <Separator className="my-5" />
 
-            <Button className="w-full" asChild>
+            <Button className="w-full rounded-full" asChild>
               <a href={`tel:${business.phone}`}>Call Now</a>
             </Button>
           </div>
@@ -185,13 +185,11 @@ function ContactRow({
 }) {
   return (
     <div className="flex gap-3">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary">
         <Icon className="h-4 w-4 text-muted-foreground" />
       </div>
       <div className="flex flex-col gap-0.5">
-        <span className="text-xs font-medium text-muted-foreground">
-          {label}
-        </span>
+        <span className="text-xs text-muted-foreground">{label}</span>
         <div className="text-sm text-foreground">{children}</div>
       </div>
     </div>

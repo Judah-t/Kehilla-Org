@@ -27,6 +27,12 @@ export interface Category {
   icon: string
 }
 
+export interface Neighborhood {
+  id: string
+  name: string
+  slug: string
+}
+
 // ─── Client ───────────────────────────────────────────────────────────────────
 export function createClient() {
   return createBrowserClient(
@@ -36,6 +42,15 @@ export function createClient() {
 }
 
 // ─── Placeholder data ─────────────────────────────────────────────────────────
+const PLACEHOLDER_NEIGHBORHOODS: Neighborhood[] = [
+  { id: "1", name: "Williamsburg", slug: "williamsburg" },
+  { id: "2", name: "Borough Park", slug: "borough-park" },
+  { id: "3", name: "Flatbush / Midwood", slug: "flatbush-midwood" },
+  { id: "4", name: "Crown Heights", slug: "crown-heights" },
+  { id: "5", name: "Lakewood", slug: "lakewood" },
+  { id: "6", name: "Monsey", slug: "monsey" },
+]
+
 const PLACEHOLDER_CATEGORIES: Category[] = [
   { id: "1", name: "Restaurants", slug: "restaurants", icon: "UtensilsCrossed" },
   { id: "2", name: "Groceries", slug: "groceries", icon: "ShoppingCart" },
@@ -205,6 +220,10 @@ const PLACEHOLDER_BUSINESSES: Business[] = [
 // ─── Query functions ──────────────────────────────────────────────────────────
 // These return placeholder data now. Replace with real Supabase queries once
 // your database is set up.
+
+export async function getNeighborhoods(): Promise<Neighborhood[]> {
+  return PLACEHOLDER_NEIGHBORHOODS
+}
 
 export async function getCategories(): Promise<Category[]> {
   // const supabase = createClient()

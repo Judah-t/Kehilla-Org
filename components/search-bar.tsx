@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Search } from "lucide-react"
@@ -44,15 +43,17 @@ export function SearchBar({
         />
         <Input
           type="text"
-          placeholder="Search businesses, services, or categories..."
+          placeholder="Search businesses, services..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className={`${isLarge ? "h-12 pl-11 text-base" : "h-10 pl-10 text-sm"} border-border bg-card`}
+          className={`rounded-full border-border bg-background ${
+            isLarge ? "h-12 pl-11 pr-4 text-base" : "h-10 pl-10 pr-3 text-sm"
+          }`}
         />
       </div>
       <Button
         type="submit"
-        className={isLarge ? "h-12 px-6" : "h-10 px-4"}
+        className={`rounded-full ${isLarge ? "h-12 px-6" : "h-10 px-4"}`}
       >
         Search
       </Button>

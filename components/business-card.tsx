@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { MapPin, Phone } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 import type { Business } from "@/lib/supabase"
 
 interface BusinessCardProps {
@@ -11,25 +10,23 @@ export function BusinessCard({ business }: BusinessCardProps) {
   return (
     <Link
       href={`/business/${business.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md"
+      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:shadow-md"
     >
-      <div className="flex h-40 items-center justify-center bg-muted">
-        <span className="text-4xl font-bold text-muted-foreground/30">
+      {/* Placeholder header with initial */}
+      <div className="flex h-36 items-center justify-center bg-secondary">
+        <span className="text-4xl font-bold text-muted-foreground/20">
           {business.name.charAt(0)}
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-5">
+      <div className="flex flex-1 flex-col gap-2.5 p-5">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors text-pretty">
+          <h3 className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
             {business.name}
           </h3>
-          <Badge
-            variant="secondary"
-            className="shrink-0 text-xs"
-          >
+          <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
             {business.category}
-          </Badge>
+          </span>
         </div>
 
         <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
@@ -40,7 +37,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <MapPin className="h-3.5 w-3.5 shrink-0" />
             <span className="truncate">
-              {business.address}, {business.city}, {business.state}
+              {business.address}, {business.city}
             </span>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">

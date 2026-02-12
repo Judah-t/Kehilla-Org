@@ -23,15 +23,19 @@ const FOOTER_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card">
+    <footer className="border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
         <div className="flex flex-col gap-10 md:flex-row md:justify-between">
           <div className="max-w-xs">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                <span className="text-lg font-bold text-primary-foreground">K</span>
+            <Link href="/" className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+                <span className="text-base font-bold text-primary-foreground">
+                  K
+                </span>
               </div>
-              <span className="text-xl font-semibold text-foreground">Kehilla</span>
+              <span className="text-lg font-semibold text-foreground">
+                Kehilla
+              </span>
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Connecting our community with trusted local businesses. Find the
@@ -42,7 +46,7 @@ export function Footer() {
           <div className="flex gap-16">
             {FOOTER_LINKS.map((group) => (
               <div key={group.title}>
-                <h3 className="text-sm font-semibold text-foreground">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-primary">
                   {group.title}
                 </h3>
                 <ul className="mt-3 flex flex-col gap-2.5">

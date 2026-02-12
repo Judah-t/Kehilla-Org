@@ -1,5 +1,14 @@
 import Link from "next/link"
-import { UtensilsCrossed, ShoppingCart, GraduationCap, Heart, Home, Scale, Building2, Landmark } from "lucide-react"
+import {
+  UtensilsCrossed,
+  ShoppingCart,
+  GraduationCap,
+  Heart,
+  Home,
+  Scale,
+  Building2,
+  Landmark,
+} from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import type { Category } from "@/lib/supabase"
 
@@ -26,10 +35,12 @@ export function CategoryCard({ category }: CategoryCardProps) {
       href={`/browse?category=${category.slug}`}
       className="group flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 transition-all hover:border-primary/30 hover:shadow-sm"
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-        <Icon className="h-6 w-6" />
+      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+        <Icon className="h-5 w-5" />
       </div>
-      <span className="text-sm font-medium text-foreground">{category.name}</span>
+      <span className="text-sm font-medium text-foreground">
+        {category.name}
+      </span>
     </Link>
   )
 }
